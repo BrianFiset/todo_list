@@ -57,6 +57,11 @@ function toggleTaskMenu(e){
     document.querySelector('.tasks > form').classList.toggle('display-none');
 };
 
+function adjustHeight() {
+    this.style.height = 'auto';
+    this.style.height = this.scrollHeight + 'px';
+}
+
 export function removeTask(){
     const taskNumber = document.querySelector('.task-number');
     todoItems.splice(taskNumber.value,1);
@@ -67,4 +72,5 @@ export function start(){
     addTaskMenuBtn.addEventListener('click', toggleTaskMenu,100);
     addTaskBtn.addEventListener('click', addTask);
     closeTaskMenu.addEventListener('click', toggleTaskMenu);
+    description.addEventListener('input', adjustHeight,false)
 };
