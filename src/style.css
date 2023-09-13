@@ -175,6 +175,8 @@ body > .container {
 
 .tasks {
     padding: 0 55px 0;
+    display: flex;
+    flex-direction: column;
 }
 
 .sort-tasks {
@@ -188,11 +190,16 @@ body > .container {
     color: grey;
     font-size: 0.9rem;
     gap: 0.5rem;
+    order: 1;
 }
 
 .add-tasks:hover {
     cursor: pointer;
     color: #1d4ed8;
+}
+
+.tasks > form {
+    order: 1;
 }
 
 .hidden {
@@ -203,6 +210,10 @@ body > .container {
 .open {
     margin-left: 0;
     transition: 0.75s;
+}
+
+.display-none {
+    display: none;
 }
 
 .expand-main {

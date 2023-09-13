@@ -1,4 +1,8 @@
-import { removeChildren } from "./task";
+export function removeChildren(elem) {
+    while(elem.firstChild) {
+        elem.removeChild(elem.firstChild);
+    };
+};
 
 
 export function features(){
