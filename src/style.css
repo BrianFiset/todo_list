@@ -272,10 +272,12 @@ select, #due-date {
     margin-top: 0.5rem;
 }
 
-.tasks > .item {
+.tasks .item {
     border-bottom: 1px solid #9ca3af;
     padding-top: 4px;
     padding-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .main-content > .container{
