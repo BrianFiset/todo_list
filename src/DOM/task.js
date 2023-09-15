@@ -13,19 +13,12 @@ const closeTaskMenu = document.querySelector('.close-task-menu');
 function clearForm() {
     title.value = '';
     dueDate.value = '';
-    priority.value = '';
+    priority.value = 'low';
+    priority.classList = 'green'
     description.value = '';
 };
 
-function missingValues(items) {
-    let missing = 0;
-    for (let item of items){
-        if(item === '' || item === null) missing += 1;
-    };
-    return missing
-};
-
-function addTaskListItem(title,description){
+function addTaskListItem(title,description,date,priority){
     const item = document.createElement('div');
     item.classList.add('item');
     const titleDiv = document.createElement('div');
@@ -34,19 +27,33 @@ function addTaskListItem(title,description){
     const descriptionDiv = document.createElement('div');
     descriptionDiv.classList.add('description');
     descriptionDiv.textContent = description;
-    item.appendChild(titleDiv);
-    item.appendChild(descriptionDiv)
-    tasks.appendChild(item)
+    const dateDiv = document.createElement('div');
+    dateDiv.classList.add('date');
+    dateDiv.textContent = date;
+    const priorityDiv = document.createElement('div');
+    priorityDiv.classList.add('priority');
+    priorityDiv.textContent = priority;
+    const left = document.createElement('div');
+    left.classList.add('left');
+    const right = document.createElement('div');
+    right.classList.add('right');
+
+    left.appendChild(titleDiv);
+    left.appendChild(descriptionDiv);
+    right.appendChild(dateDiv);
+    right.appendChild(priorityDiv);
+    item.appendChild(left);
+    item.appendChild(right);
+    tasks.appendChild(item);
 }
 
 
 
 function addTask(e) {   
-    let missing = missingValues([title.value,dueDate.value,priority.value]);
-    if(missing === 0) {
+    if(title.value !== '') {
         e.preventDefault();
         todoItems.push(new TodoItem(title.value,dueDate.value,priority.value,description.value));
-        addTaskListItem(title.value, description.value)
+        addTaskListItem(title.value, description.value, dueDate.value , priority.value)
         clearForm();
         toggleTaskMenu();
     };

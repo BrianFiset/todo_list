@@ -207,6 +207,7 @@ form {
     gap: 4px;
     padding: 0.5rem;
     margin-top: 10px;
+    border-radius: 4px;
 }
 
 form input[type="text"],
@@ -271,6 +272,17 @@ select, #due-date {
     margin-top: 0.5rem;
 }
 
+.tasks > .item {
+    border-bottom: 1px solid #9ca3af;
+    padding-top: 4px;
+    padding-bottom: 8px;
+}
+
+.main-content > .container{
+    display: flex;
+    flex-direction: column;
+}
+
 .add-task-btn {
     background-color: #1d4ed8;
     color: white;
@@ -299,6 +311,10 @@ select, #due-date {
 .close-task-menu:active {
     transform: scale(0.95);
     transition: 0.1s;
+}
+
+#priority {
+    background-color: white;
 }
 
 .hidden {
