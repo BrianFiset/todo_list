@@ -1,8 +1,12 @@
 import { TodoItem , todoItems} from "../logic/todoItem";
+import { project } from "../logic/todoItem";
+import { removeChildren } from "./features";
+import { loadProjectOnMenu } from "./projectPage";
 
 const title = document.querySelector('#title');
 const dueDate = document.querySelector('#due-date');
 const priority = document.querySelector('#priority');
+const taskProject = document.querySelector('#task-project');
 const description = document.querySelector('#description');
 const addTaskBtn = document.querySelector('.add-task-btn');
 const deleteTaskBtn = document.querySelector('.delete-task-btn');
@@ -70,10 +74,18 @@ function addTaskListItem(title,description,date,priority){
 function addTask(e) {   
     if(title.value !== '') {
         e.preventDefault();
-        todoItems.push(new TodoItem(title.value,dueDate.value,priority.value,description.value));
+        todoItems.push(new TodoItem(title.value,dueDate.value,priority.value,description.value,taskProject.value));
         addTaskListItem(title.value, description.value, dueDate.value , priority.value);
         clearForm();
         toggleTaskMenu();
+    };
+};
+
+export function loadProjectTask(e){
+    for(let item of todoItems){
+        if(e.target.textContent === item.project) {
+        addTaskListItem(item.title,item.description,item.dueDate,item.priority);
+        };
     };
 };
 
@@ -100,7 +112,8 @@ export function loadWeeksTask(){
     };
 };
 
-function toggleTaskMenu(e){
+export function toggleTaskMenu(e){
+    loadProjectOnMenu()
     addTaskMenuBtn.classList.toggle('display-none');
     document.querySelector('.tasks > form').classList.toggle('display-none');
 };

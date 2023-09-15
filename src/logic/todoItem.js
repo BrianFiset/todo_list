@@ -1,14 +1,12 @@
-export const todoItems = []
+export const todoItems = [];
+export const project = [];
 
 export class TodoItem{
-    constructor(title,dueDate,priority,description,group){
+    constructor(title,dueDate,priority,description,project){
         this.title = title;
         this.dueDate = dueDate;
         this.priority = priority;
         this.description = description;
-        if(group === undefined) {
-            this.group = '';
-        }
-        this.group = group;
+        this.project = project;
     };
 };

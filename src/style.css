@@ -107,7 +107,8 @@ body > .container {
     flex-direction: column;
 }
 
-.sidebar-top > div, .projects {
+.sidebar-top > div, .projects,
+.project-name{
     display: flex;
     align-items: center;
     gap: 5px;
@@ -115,7 +116,8 @@ body > .container {
     border-radius: 4px;
 }
 
-.sidebar-top > div:hover, .projects:hover  {
+.sidebar-top > div:hover, .projects:hover,
+.project-name:hover  {
     background-color: rgba(0, 0, 0, 0.1);
     cursor: pointer;
 }
@@ -138,7 +140,7 @@ body > .container {
     width: 100%;
 }
 
-.add-project > .btns {
+.add-project .btns {
     display: flex;
     justify-content: space-around;
     margin: 4px 0
@@ -245,7 +247,7 @@ body > .container {
     color: #1d4ed8;
 }
 
-form {
+.add-task-form {
     order: 1;
     display: flex;
     flex-direction: column;
@@ -256,19 +258,19 @@ form {
     border-radius: 4px;
 }
 
-form input[type="text"],
-form textarea {
+.add-task-form input[type="text"],
+.add-task-form textarea {
     width:100%;
     border: none;
     box-sizing: border-box;
 }
 
-form input[type="text"]:focus,
-form textarea:focus {
+.add-task-form input[type="text"]:focus,
+.add-task-form textarea:focus {
     outline: none;
 }
 
-form textarea {
+.add-task-form textarea {
     min-width:100%;
     max-width: 100%;
     resize: none;
@@ -363,7 +365,8 @@ select, #due-date {
     transition: 0.1s;
 }
 
-#priority {
+#priority,
+#task-project {
     background-color: white;
 }
 
