@@ -67,14 +67,16 @@
                             <div class="add-task-icon"></div>
                         </div>
                         <div class="add-project display-none">
-                            <input type="text" name="project" id="project">
-                            <div class="btns">
-                                <button class="add">Add</button>
-                                <button class="cancel">Cancel</button>
-                            </div>
+                            <form>
+                                <input type="text" name="project" id="project" required>
+                                <div class="btns">
+                                    <button class="add">Add</button>
+                                    <button type="button" class="cancel">Cancel</button>
+                                </div>
+                            </form>
                         </div>
-                        <div class="items"></div>
                     </div>
+                    <div class="items"></div>
                 </div>
             </div>
             <div class="main-content">
@@ -88,7 +90,7 @@
                             <div class="add-task-icon"></div>
                             <div class="text">Add task</div>
                         </div>
-                        <form action="" class="display-none">
+                        <form action="" class="add-task-form display-none">
                             <div>
                                 <input type="text" name="title" id="title" placeholder="Task name" required>
                             </div>
@@ -108,7 +110,13 @@
                                 </div>
                                 <div>
                                     <label for="due-date">Due Date</label>
-                                    <input type="date" name="due-date" id="due-date" required>
+                                    <input type="date" name="due-date" id="due-date">
+                                </div>
+                                <div>
+                                    <label for="task-project">Project</label>
+                                    <select name="task-project" id="task-project">
+                                        <option value="default">Default</option>
+                                    </select>                                
                                 </div>
                             </div>
                             <div class="buttons">
