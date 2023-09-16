@@ -33,37 +33,56 @@ function clearForm() {
 
 function priorityColor(prio,div) {
     if(prio === 'Low'){
-        div.classList.add('green');
+        div.classList.add('green-border');
     }else if(prio === 'Medium'){
-        div.classList.add('yellow');
-    } else div.classList.add('red');
+        div.classList.add('yellow-border');
+    } else div.classList.add('red-border');
 }
 
-function addTaskListItem(title,description,date,priority){
-    const item = document.createElement('div');
-    item.classList.add('item');
-    const titleDiv = document.createElement('div');
-    titleDiv.classList.add('title');
-    titleDiv.textContent = title;
-    const descriptionDiv = document.createElement('div');
-    descriptionDiv.classList.add('description');
-    descriptionDiv.textContent = description;
-    const dateDiv = document.createElement('div');
-    dateDiv.classList.add('date');
-    dateDiv.textContent = date;
-    const priorityDiv = document.createElement('div');
-    priorityDiv.classList.add('priority');
-    priorityDiv.textContent = priority;
-    priorityColor(priority,priorityDiv);
-    const left = document.createElement('div');
-    left.classList.add('left');
-    const right = document.createElement('div');
-    right.classList.add('right');
+const getOrdinalNum = (number) => {
+    let selector;
+  
+    if ((number > 3 && number < 21) || number % 10 > 3) {
+      selector = 0;
+    } else {
+      selector = number % 10;
+    }
+  
+    return number + ['th', 'st', 'nd', 'rd'][selector];
+  };
 
+const createDivElementWithClass = (className) => {
+    const div = document.createElement('div');
+    div.classList.add(className);
+    return div;
+};
+
+function addTaskListItem(title,date,priority){
+    const checkMark = createDivElementWithClass('checkbox');
+    const item = createDivElementWithClass('item');
+    const titleDiv = createDivElementWithClass('title');
+    titleDiv.textContent = title;
+    const dateDiv = createDivElementWithClass('date');
+    let dateText = new Date(date)
+    let month = dateText.toLocaleString('default',{month: 'short'});
+    let day = getOrdinalNum(dateText.getDay());
+    dateDiv.textContent =  month + ' ' + day
+    const detailsDiv = createDivElementWithClass('details');;
+    detailsDiv.textContent = 'Details';
+
+    const editDiv = createDivElementWithClass('edit-icon');;
+    const deleteDiv = createDivElementWithClass('delete-icon');
+
+    const right = createDivElementWithClass('task-right');;
+    const left = createDivElementWithClass('task-left');
+
+    left.appendChild(checkMark)
     left.appendChild(titleDiv);
-    left.appendChild(descriptionDiv);
+    right.appendChild(detailsDiv);
     right.appendChild(dateDiv);
-    right.appendChild(priorityDiv);
+    right.appendChild(editDiv);
+    right.appendChild(deleteDiv);
+    priorityColor(priority,item);
     item.appendChild(left);
     item.appendChild(right);
     tasksItems.appendChild(item);
@@ -75,7 +94,7 @@ function addTask(e) {
     if(title.value !== '') {
         e.preventDefault();
         todoItems.push(new TodoItem(title.value,dueDate.value,priority.value,description.value,taskProject.value));
-        addTaskListItem(title.value, description.value, dueDate.value , priority.value);
+        addTaskListItem(title.value, dueDate.value , priority.value);
         clearForm();
         toggleTaskMenu();
     };
@@ -84,21 +103,21 @@ function addTask(e) {
 export function loadProjectTask(e){
     for(let item of todoItems){
         if(e.target.textContent === item.project) {
-        addTaskListItem(item.title,item.description,item.dueDate,item.priority);
+        addTaskListItem(item.title,item.dueDate,item.priority);
         };
     };
 };
 
 export function loadTask(){
     for(let item of todoItems){
-        addTaskListItem(item.title,item.description,item.dueDate,item.priority);
+        addTaskListItem(item.title,item.dueDate,item.priority);
     };
 };
 
 export function loadTodaysTask(){
     for(let item of todoItems){
         if(item.dueDate === today){
-            addTaskListItem(item.title,item.description,item.dueDate,item.priority);
+            addTaskListItem(item.title,item.dueDate,item.priority);
         };
     };
 };
@@ -107,7 +126,7 @@ export function loadWeeksTask(){
     for(let item of todoItems){
         if(item.dueDate >= today &&
         item.dueDate <= nextWeek){
-            addTaskListItem(item.title,item.description,item.dueDate,item.priority);
+            addTaskListItem(item.title,item.dueDate,item.priority);
         };
     };
 };
