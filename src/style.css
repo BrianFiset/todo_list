@@ -440,7 +440,13 @@ select, #due-date {
     cursor: pointer;
 }
 
+.checkbox-icon + .title {
+    text-decoration: line-through;
+}
 
+.item .date {
+    width: 9ch;
+}
 /* Icons */
 
 .add-task-icon {

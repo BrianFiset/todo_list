@@ -9,7 +9,7 @@ const priority = document.querySelector('#priority');
 const taskProject = document.querySelector('#task-project');
 const description = document.querySelector('#description');
 const addTaskBtn = document.querySelector('.add-task-btn');
-const deleteTaskBtn = document.querySelector('.delete-task-btn');
+const deleteTaskBtn = document.querySelectorAll('.delete-icon');
 const addTaskMenuBtn = document.querySelector('.tasks > .add-tasks');
 const tasks = document.querySelector('.tasks');
 const tasksItems = document.querySelector('.tasks > .items');
@@ -41,7 +41,7 @@ function priorityColor(prio,div) {
 
 const getOrdinalNum = (number) => {
     let selector;
-  
+    number += 1;
     if ((number > 3 && number < 21) || number % 10 > 3) {
       selector = 0;
     } else {
@@ -57,23 +57,37 @@ const createDivElementWithClass = (className) => {
     return div;
 };
 
+export function removeTask(e){
+    console.log(e);
+    title = e.target.dataset.title
+    console.log(title);
+}
+
+
 function addTaskListItem(title,date,priority){
     const checkMark = createDivElementWithClass('checkbox');
+    checkMark.addEventListener('click',() => { checkMark.classList.toggle('checkbox-icon')})
     const item = createDivElementWithClass('item');
     const titleDiv = createDivElementWithClass('title');
     titleDiv.textContent = title;
     const dateDiv = createDivElementWithClass('date');
     let dateText = new Date(date)
     let month = dateText.toLocaleString('default',{month: 'short'});
-    let day = getOrdinalNum(dateText.getDay());
+    let day = getOrdinalNum(dateText.getDate());
     dateDiv.textContent =  month + ' ' + day
     const detailsDiv = createDivElementWithClass('details');;
     detailsDiv.textContent = 'Details';
 
     const editDiv = createDivElementWithClass('edit-icon');;
     const deleteDiv = createDivElementWithClass('delete-icon');
+    deleteDiv.dataset.title = title;
+    deleteDiv.addEventListener('click',() => {
+        let index = todoItems.findIndex(item => item.title === deleteDiv.dataset.title);
+        todoItems.splice(index,1);
+        tasksItems.removeChild(item);
+    });
 
-    const right = createDivElementWithClass('task-right');;
+    const right = createDivElementWithClass('task-right');
     const left = createDivElementWithClass('task-left');
 
     left.appendChild(checkMark)
@@ -91,14 +105,19 @@ function addTaskListItem(title,date,priority){
 
 
 function addTask(e) {   
-    if(title.value !== '') {
+    if(title.value !== '' && dueDate.value !== '') {
         e.preventDefault();
-        todoItems.push(new TodoItem(title.value,dueDate.value,priority.value,description.value,taskProject.value));
-        addTaskListItem(title.value, dueDate.value , priority.value);
-        clearForm();
-        toggleTaskMenu();
+        if(todoItems.filter(item => item.title === title.value) == 0){
+            todoItems.push(new TodoItem(title.value,dueDate.value,priority.value,description.value,taskProject.value));
+            addTaskListItem(title.value, dueDate.value , priority.value);
+            clearForm();
+            toggleTaskMenu();
+        } else {
+            alert(`${title.value} already exists`)
+        }
     };
 };
+
 
 export function loadProjectTask(e){
     for(let item of todoItems){
@@ -140,12 +159,6 @@ export function toggleTaskMenu(e){
 function adjustHeight() {
     this.style.height = 'auto';
     this.style.height = this.scrollHeight + 'px';
-}
-
-export function removeTask(){
-    const taskNumber = document.querySelector('.task-number');
-    todoItems.splice(taskNumber.value,1);
-    console.log(todoItems);
 }
 
 export function start(){
