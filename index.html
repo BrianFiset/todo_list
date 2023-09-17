@@ -139,6 +139,43 @@
                 </div>
             </div>
         </div>
+        <div class="form-edit display-none">
+            <form action="" class="edit-task-form">
+                <div>
+                    <input type="text" name="title" id="edit-title" placeholder="Task name" required>
+                </div>
+                <div>
+                    <textarea name="description" id="edit-description" placeholder="Task description"></textarea>
+                </div>
+                <div class="task-options">
+                    <div>
+                        <label for="priority">Priority</label>
+                        <select name="priority" id="edit-priority"
+                        onchange="this.className=this.options[this.selectedIndex].className"
+                        class="green">
+                            <option value="Low" class="green">Low</option>
+                            <option value="Medium" class="yellow">Medium</option>
+                            <option value="High" class="red">High</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="due-date">Due Date</label>
+                        <input type="date" name="due-date" id="edit-due-date" required>
+                    </div>
+                    <div>
+                        <label for="task-project">Project</label>
+                        <select name="task-project" id="edit-task-project">
+                            <option value="default">Default</option>
+                        </select>                                
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button type="button" class="edit-close-task-menu">Close</button>
+                    <button class="edit-add-task-btn">Edit Task</button>
+                </div>
+            </form>
+            </div>
+        </div>
     </div>
     <script src="main.js"></script>
 </body>
