@@ -8,9 +8,17 @@ const dueDate = document.querySelector('#due-date');
 const priority = document.querySelector('#priority');
 const taskProject = document.querySelector('#task-project');
 const description = document.querySelector('#description');
+const editTitle = document.querySelector('#edit-title');
+const editDueDate = document.querySelector('#edit-due-date');
+const editPriority = document.querySelector('#edit-priority');
+const editTaskProject = document.querySelector('#edit-task-project');
+const editDescription = document.querySelector('#edit-description');
+const editAddTaskBtn = document.querySelector('.edit-add-task-btn');
 const addTaskBtn = document.querySelector('.add-task-btn');
 const deleteTaskBtn = document.querySelectorAll('.delete-icon');
 const addTaskMenuBtn = document.querySelector('.tasks > .add-tasks');
+const editTaskMenuBtn = document.querySelector('.edit-close-task-menu');
+const editTask = document.querySelector('.form-edit');
 const tasks = document.querySelector('.tasks');
 const tasksItems = document.querySelector('.tasks > .items');
 const closeTaskMenu = document.querySelector('.close-task-menu');
@@ -61,17 +69,17 @@ const createDivElementWithClass = (className) => {
 };
 
 function addTaskListItem(title,date,priority){
-    let index = todoItems.findIndex(item => item.title === title);
+    const index = todoItems.findIndex(item => item.title === title);
     const checkMark = createDivElementWithClass('checkbox');
     checkMark.addEventListener('click',() => { checkMark.classList.toggle('checkbox-icon')})
     const item = createDivElementWithClass('item');
     const titleDiv = createDivElementWithClass('title');
     titleDiv.textContent = title;
     const dateDiv = createDivElementWithClass('date');
-    let dateText = new Date(date)
-    let month = dateText.toLocaleString('default',{month: 'short'});
-    let day = getOrdinalNum(dateText.getDate());
-    dateDiv.textContent =  month + ' ' + day
+    const dateText = new Date(date);
+    const month = dateText.toLocaleString('default',{month: 'short'});
+    const day = getOrdinalNum(dateText.getDate());
+    dateDiv.textContent =  month + ' ' + day;
     const detailsDiv = createDivElementWithClass('details');
     detailsDiv.textContent = 'Details';
     detailsDiv.addEventListener('click', () => {
@@ -87,6 +95,29 @@ function addTaskListItem(title,date,priority){
     });
 
     const editDiv = createDivElementWithClass('edit-icon');
+    editDiv.addEventListener('click', () => {
+        editTask.classList.remove('display-none');
+        editTitle.value = todoItems[index].title;
+        editDescription.value = todoItems[index].description;
+        editPriority.value = todoItems[index].priority;
+        editDueDate.value = todoItems[index].dueDate;
+        editAddTaskBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            todoItems[index].title =  editTitle.value;
+            todoItems[index].description =  editDescription.value;
+            todoItems[index].priority = editPriority.value;
+            todoItems[index].dueDate = editDueDate.value;
+            todoItems[index].project = editTaskProject.value;
+            titleDiv.textContent = editTitle.value;
+            priorityColor(editPriority.value,item)
+            const dateText = new Date(editDueDate.value);
+            const month = dateText.toLocaleString('default',{month: 'short'});
+            const day = getOrdinalNum(dateText.getDate());
+            dateDiv.textContent =  month + ' ' + day;
+            editTask.classList.add('display-none');
+        });
+    });
+
     const deleteDiv = createDivElementWithClass('delete-icon');
     deleteDiv.dataset.title = title;
     deleteDiv.addEventListener('click',() => {
@@ -107,7 +138,7 @@ function addTaskListItem(title,date,priority){
     item.appendChild(left);
     item.appendChild(right);
     tasksItems.appendChild(item);
-}
+};
 
 
 
@@ -116,6 +147,7 @@ function addTask(e) {
         e.preventDefault();
         if(todoItems.filter(item => item.title === title.value) == 0){
             todoItems.push(new TodoItem(title.value,dueDate.value,priority.value,description.value,taskProject.value));
+            addTaskListItem(title.value, dueDate.value , priority.value);
             clearForm();
             toggleTaskMenu();
         } else {
@@ -171,6 +203,7 @@ export function start(){
     addTaskMenuBtn.addEventListener('click', toggleTaskMenu,100);
     addTaskBtn.addEventListener('click', addTask);
     closeTaskMenu.addEventListener('click', toggleTaskMenu);
+    editTaskMenuBtn.addEventListener('click', () => editTask.classList.add('display-none'))
     description.addEventListener('input', adjustHeight,false);
     closeDetailsPopUp.addEventListener('click', () => detailsPopUp.classList.add('display-none'))
     loadTask();
