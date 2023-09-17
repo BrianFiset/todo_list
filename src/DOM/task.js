@@ -14,6 +14,9 @@ const addTaskMenuBtn = document.querySelector('.tasks > .add-tasks');
 const tasks = document.querySelector('.tasks');
 const tasksItems = document.querySelector('.tasks > .items');
 const closeTaskMenu = document.querySelector('.close-task-menu');
+const detailsPopUp = document.querySelector('.details-pop-up');
+const detailsPopUpContent = document.querySelector('.details-container');
+const closeDetailsPopUp = document.querySelector('.close-icon');
 let today = new Date;
 let nextWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate()+6);
 today = today.toISOString().split('T')[0]
@@ -57,14 +60,8 @@ const createDivElementWithClass = (className) => {
     return div;
 };
 
-export function removeTask(e){
-    console.log(e);
-    title = e.target.dataset.title
-    console.log(title);
-}
-
-
 function addTaskListItem(title,date,priority){
+    let index = todoItems.findIndex(item => item.title === title);
     const checkMark = createDivElementWithClass('checkbox');
     checkMark.addEventListener('click',() => { checkMark.classList.toggle('checkbox-icon')})
     const item = createDivElementWithClass('item');
@@ -75,14 +72,24 @@ function addTaskListItem(title,date,priority){
     let month = dateText.toLocaleString('default',{month: 'short'});
     let day = getOrdinalNum(dateText.getDate());
     dateDiv.textContent =  month + ' ' + day
-    const detailsDiv = createDivElementWithClass('details');;
+    const detailsDiv = createDivElementWithClass('details');
     detailsDiv.textContent = 'Details';
+    detailsDiv.addEventListener('click', () => {
+        detailsPopUp.classList.remove('display-none');
+        const titleText = document.querySelector('.details-container > .title');
+        const priorityText = document.querySelector('.priority-span');
+        const dateText = document.querySelector('.date-span');
+        const detailsText = document.querySelector('.description-span');
+        titleText.textContent = todoItems[index].title;
+        detailsText.textContent = todoItems[index].description;
+        priorityText.textContent = todoItems[index].priority;
+        dateText.textContent = todoItems[index].dueDate;
+    });
 
-    const editDiv = createDivElementWithClass('edit-icon');;
+    const editDiv = createDivElementWithClass('edit-icon');
     const deleteDiv = createDivElementWithClass('delete-icon');
     deleteDiv.dataset.title = title;
     deleteDiv.addEventListener('click',() => {
-        let index = todoItems.findIndex(item => item.title === deleteDiv.dataset.title);
         todoItems.splice(index,1);
         tasksItems.removeChild(item);
     });
@@ -90,7 +97,7 @@ function addTaskListItem(title,date,priority){
     const right = createDivElementWithClass('task-right');
     const left = createDivElementWithClass('task-left');
 
-    left.appendChild(checkMark)
+    left.appendChild(checkMark);
     left.appendChild(titleDiv);
     right.appendChild(detailsDiv);
     right.appendChild(dateDiv);
@@ -109,12 +116,11 @@ function addTask(e) {
         e.preventDefault();
         if(todoItems.filter(item => item.title === title.value) == 0){
             todoItems.push(new TodoItem(title.value,dueDate.value,priority.value,description.value,taskProject.value));
-            addTaskListItem(title.value, dueDate.value , priority.value);
             clearForm();
             toggleTaskMenu();
         } else {
-            alert(`${title.value} already exists`)
-        }
+            alert(`${title.value} already exists`);
+        };
     };
 };
 
@@ -166,5 +172,6 @@ export function start(){
     addTaskBtn.addEventListener('click', addTask);
     closeTaskMenu.addEventListener('click', toggleTaskMenu);
     description.addEventListener('input', adjustHeight,false);
+    closeDetailsPopUp.addEventListener('click', () => detailsPopUp.classList.add('display-none'))
     loadTask();
 };

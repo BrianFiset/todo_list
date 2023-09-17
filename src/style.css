@@ -393,10 +393,6 @@ select, #due-date {
     transition: 0.75s;
 }
 
-.display-none {
-    display: none;
-}
-
 .expand-main {
     grid-column: 1 / 3;
 }
@@ -447,6 +443,54 @@ select, #due-date {
 .item .date {
     width: 9ch;
 }
+
+/* Detail pop up */
+
+.details-pop-up {
+    position: absolute;
+    backdrop-filter: blur(4px);;
+    background-color: rgba(0, 0, 0,0.3);
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.details-container {
+    position: relative;
+    min-height: 250px;
+    width: calc(300px + 20vw);
+    background-color: white;
+    box-shadow: 0 2px 4px 4px rgba(0, 0, 0,0.3);
+    padding: 1rem;
+    box-sizing: border-box;
+    border-radius: 4px;
+    color: #193ec2;
+}
+
+.details-container > .title {
+    margin-bottom: 1rem;
+}
+
+.details-container > div {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.details-container span {
+    font-weight: 500;
+}
+
+.close-container {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+}
+
+
+
 /* Icons */
 
 .add-task-icon {
@@ -510,6 +554,12 @@ select, #due-date {
     width: 24px;
 }
 
+.close-icon {
+    background-image: url(./img/icons/close.svg);
+    height: 24px;
+    width: 24px;
+}
+
 .project > .add-task-icon {
     background-image: url(./img/icons/plus-gray.svg);
 }
@@ -537,7 +587,8 @@ select, #due-date {
 }
 
 .delete-icon:hover,
-.edit-icon:hover {
+.edit-icon:hover,
+.close-icon:hover {
     cursor: pointer;
     scale: 1.1;
     transition: 0.2s;
@@ -548,4 +599,8 @@ select, #due-date {
     background-image: url(./img/icons/check-bold.svg);
     height: 18px;
     width: 18px;
+}
+
+.display-none {
+    display: none;
 }
