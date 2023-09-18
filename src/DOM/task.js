@@ -1,7 +1,6 @@
 import { TodoItem , todoItems} from "../logic/todoItem";
 import { project } from "../logic/todoItem";
 import { removeChildren } from "./features";
-import { loadProjectOnMenu } from "./projectPage";
 
 const title = document.querySelector('#title');
 const dueDate = document.querySelector('#due-date');
@@ -68,6 +67,18 @@ const createDivElementWithClass = (className) => {
     return div;
 };
 
+function editTasks(e){
+    e.preventDefault();
+    const index = todoItems.findIndex(item => item.title === e.target.dataset.title);
+        todoItems[index].title =  editTitle.value;
+        todoItems[index].description =  editDescription.value;
+        todoItems[index].priority = editPriority.value;
+        todoItems[index].dueDate = editDueDate.value;
+        todoItems[index].project = editTaskProject.value;
+        loadTask();
+        editTask.classList.add('display-none');
+}
+
 function addTaskListItem(title,date,priority){
     const index = todoItems.findIndex(item => item.title === title);
     const checkMark = createDivElementWithClass('checkbox');
@@ -95,27 +106,14 @@ function addTaskListItem(title,date,priority){
     });
 
     const editDiv = createDivElementWithClass('edit-icon');
+    editDiv.dataset.title = title;
     editDiv.addEventListener('click', () => {
         editTask.classList.remove('display-none');
         editTitle.value = todoItems[index].title;
         editDescription.value = todoItems[index].description;
         editPriority.value = todoItems[index].priority;
         editDueDate.value = todoItems[index].dueDate;
-        editAddTaskBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            todoItems[index].title =  editTitle.value;
-            todoItems[index].description =  editDescription.value;
-            todoItems[index].priority = editPriority.value;
-            todoItems[index].dueDate = editDueDate.value;
-            todoItems[index].project = editTaskProject.value;
-            titleDiv.textContent = editTitle.value;
-            priorityColor(editPriority.value,item)
-            const dateText = new Date(editDueDate.value);
-            const month = dateText.toLocaleString('default',{month: 'short'});
-            const day = getOrdinalNum(dateText.getDate());
-            dateDiv.textContent =  month + ' ' + day;
-            editTask.classList.add('display-none');
-        });
+        editAddTaskBtn.dataset.title = title;
     });
 
     const deleteDiv = createDivElementWithClass('delete-icon');
@@ -127,7 +125,6 @@ function addTaskListItem(title,date,priority){
 
     const right = createDivElementWithClass('task-right');
     const left = createDivElementWithClass('task-left');
-
     left.appendChild(checkMark);
     left.appendChild(titleDiv);
     right.appendChild(detailsDiv);
@@ -189,7 +186,6 @@ export function loadWeeksTask(){
 };
 
 export function toggleTaskMenu(e){
-    loadProjectOnMenu()
     addTaskMenuBtn.classList.toggle('display-none');
     document.querySelector('.tasks > form').classList.toggle('display-none');
 };
@@ -206,5 +202,17 @@ export function start(){
     editTaskMenuBtn.addEventListener('click', () => editTask.classList.add('display-none'))
     description.addEventListener('input', adjustHeight,false);
     closeDetailsPopUp.addEventListener('click', () => detailsPopUp.classList.add('display-none'))
+    editAddTaskBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const index = todoItems.findIndex(item => item.title === e.target.dataset.title);
+            todoItems[index].title =  editTitle.value;
+            todoItems[index].description =  editDescription.value;
+            todoItems[index].priority = editPriority.value;
+            todoItems[index].dueDate = editDueDate.value;
+            todoItems[index].project = editTaskProject.value;
+            removeChildren(tasksItems);
+            loadTask();
+            editTask.classList.add('display-none');
+    })
     loadTask();
 };

@@ -30,24 +30,30 @@ function addProject(e) {
         inputProject.value = ''
         addProjectMenu();
         loadProjects();
-        loadProjectOnMenu();
+        addProjectOptions();
         changeProjectPage();
     };
 };
 
-export function loadProjectOnMenu() {
-    const taskProject = document.querySelector('#task-project')
-    removeChildren(taskProject);
+function addProjectOptions() {
+    const taskProject = document.querySelector('#task-project');
+    const editTaskProject = document.querySelector('#edit-task-project');
+    loadProjectOnMenu(taskProject);
+    loadProjectOnMenu(editTaskProject);
+}
+
+function loadProjectOnMenu(div) {
+    removeChildren(div);
     const option = document.createElement('option');
     option.value = 'default';
     option.textContent = 'Default';
-    taskProject.appendChild(option);
+    div.appendChild(option);
 
     for(let title of project) {
         const option = document.createElement('option');
         option.value = title;
         option.textContent = title;
-        taskProject.appendChild(option);
+        div.appendChild(option);
     };
 };
 
