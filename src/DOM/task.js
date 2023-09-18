@@ -70,14 +70,20 @@ const createDivElementWithClass = (className) => {
 function editTasks(e){
     e.preventDefault();
     const index = todoItems.findIndex(item => item.title === e.target.dataset.title);
-        todoItems[index].title =  editTitle.value;
-        todoItems[index].description =  editDescription.value;
-        todoItems[index].priority = editPriority.value;
-        todoItems[index].dueDate = editDueDate.value;
-        todoItems[index].project = editTaskProject.value;
-        loadTask();
-        editTask.classList.add('display-none');
-}
+    console.log(todoItems[index].title !==  editTitle.value)
+    console.log(todoItems.findIndex(item => item.title === editTitle.value));
+    if(todoItems[index].title !==  editTitle.value) {
+        if(todoItems.findIndex(item => item.title === editTitle.value) !== -1)return alert(`${editTitle.value} already exists`);
+    };
+    todoItems[index].title =  editTitle.value;
+    todoItems[index].description =  editDescription.value;
+    todoItems[index].priority = editPriority.value;
+    todoItems[index].dueDate = editDueDate.value;
+    todoItems[index].project = editTaskProject.value;
+    removeChildren(tasksItems);
+    loadTask();
+    editTask.classList.add('display-none');
+};
 
 function addTaskListItem(title,date,priority){
     const index = todoItems.findIndex(item => item.title === title);
@@ -202,17 +208,6 @@ export function start(){
     editTaskMenuBtn.addEventListener('click', () => editTask.classList.add('display-none'))
     description.addEventListener('input', adjustHeight,false);
     closeDetailsPopUp.addEventListener('click', () => detailsPopUp.classList.add('display-none'))
-    editAddTaskBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const index = todoItems.findIndex(item => item.title === e.target.dataset.title);
-            todoItems[index].title =  editTitle.value;
-            todoItems[index].description =  editDescription.value;
-            todoItems[index].priority = editPriority.value;
-            todoItems[index].dueDate = editDueDate.value;
-            todoItems[index].project = editTaskProject.value;
-            removeChildren(tasksItems);
-            loadTask();
-            editTask.classList.add('display-none');
-    })
+    editAddTaskBtn.addEventListener('click', editTasks);
     loadTask();
 };
