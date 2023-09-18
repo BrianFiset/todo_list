@@ -16,7 +16,7 @@ export function changeProjectPage() {
     }))
 }
 
-function change(title) {
+export function change(title) {
     const addTaskMenuBtn = document.querySelector('.tasks > .add-tasks');
     mainTopText.textContent = title;
     removeChildren(items);

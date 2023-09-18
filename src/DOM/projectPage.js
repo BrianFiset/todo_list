@@ -1,6 +1,8 @@
 import { project } from "../logic/todoItem";
 import { changeProjectPage } from "./changePage";
 import { removeChildren } from "./features";
+import { change } from "./changePage";
+import { loadTask } from "./task";
 
 const addProjectMenuBtn = document.querySelector('.project > .add-task-icon');
 const addProjectSection = document. querySelector('.add-project');
@@ -16,13 +18,29 @@ function addProjectMenu() {
 function loadProjects() {
     removeChildren(projectItems)
     for(let item of project) {
+        const index = project.findIndex(project => project === item);
+        const projectItem = document.createElement('div');
+        projectItem.classList.add('project-name');
         const title = document.createElement('div');
-        title.classList.add('project-name');
+        title.classList.add('project-title');
         title.textContent = item;
-        projectItems.appendChild(title)
+        const deleteDiv = document.createElement('div');
+        deleteDiv.classList.add('delete-icon');
+        deleteDiv.dataset.title = item;
+        deleteDiv.addEventListener('click',() => {
+            change('Inbox');
+            loadTask();
+            project.splice(index,1);
+            projectItems.removeChild(projectItem);
+            localStorage.setItem('projects',JSON.stringify(project));
+        });
+        projectItem.appendChild(title)
+        projectItem.appendChild(deleteDiv)
+        projectItems.appendChild(projectItem);
     }
 }
-
+change('Inbox');
+loadTask();
 function addProject(e) {
     if(inputProject.value !== '') {
         e.preventDefault();
@@ -32,6 +50,7 @@ function addProject(e) {
         loadProjects();
         addProjectOptions();
         changeProjectPage();
+        localStorage.setItem('projects', JSON.stringify(project));
     };
 };
 
@@ -62,4 +81,6 @@ export function runProject(){
     addProjectMenuBtn.addEventListener('click', addProjectMenu);
     closeProjectMenu.addEventListener('click', addProjectMenu);
     addProjectBtn.addEventListener('click', addProject);
+    loadProjects();
+    changeProjectPage();
 };

@@ -29,10 +29,6 @@ let nextWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate()+6
 today = today.toISOString().split('T')[0]
 nextWeek = nextWeek.toISOString().split('T')[0]
 
-todoItems.push(new TodoItem('Task 1','2023-09-15','Low','123'));
-todoItems.push(new TodoItem('Task 2','2023-09-21','Medium','123'));
-todoItems.push(new TodoItem('Task 3','2023-09-22','High','123'));
-
 function clearForm() {
     title.value = '';
     dueDate.value = '';
@@ -70,8 +66,6 @@ const createDivElementWithClass = (className) => {
 function editTasks(e){
     e.preventDefault();
     const index = todoItems.findIndex(item => item.title === e.target.dataset.title);
-    console.log(todoItems[index].title !==  editTitle.value)
-    console.log(todoItems.findIndex(item => item.title === editTitle.value));
     if(todoItems[index].title !==  editTitle.value) {
         if(todoItems.findIndex(item => item.title === editTitle.value) !== -1)return alert(`${editTitle.value} already exists`);
     };
@@ -127,6 +121,7 @@ function addTaskListItem(title,date,priority){
     deleteDiv.addEventListener('click',() => {
         todoItems.splice(index,1);
         tasksItems.removeChild(item);
+        localStorage.setItem('tasks',JSON.stringify(todoItems));
     });
 
     const right = createDivElementWithClass('task-right');
@@ -141,6 +136,7 @@ function addTaskListItem(title,date,priority){
     item.appendChild(left);
     item.appendChild(right);
     tasksItems.appendChild(item);
+    localStorage.setItem('tasks',JSON.stringify(todoItems));
 };
 
 
@@ -149,7 +145,7 @@ function addTask(e) {
     if(title.value !== '' && dueDate.value !== '') {
         e.preventDefault();
         if(todoItems.filter(item => item.title === title.value) == 0){
-            todoItems.push(new TodoItem(title.value,dueDate.value,priority.value,description.value,taskProject.value));
+            todoItems.push(new TodoItem(title.value,dueDate.value,priority.value,description.value,taskProject.value,taskProject.value));
             addTaskListItem(title.value, dueDate.value , priority.value);
             clearForm();
             toggleTaskMenu();
