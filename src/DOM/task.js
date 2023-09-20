@@ -24,6 +24,8 @@ const closeTaskMenu = document.querySelector('.close-task-menu');
 const detailsPopUp = document.querySelector('.details-pop-up');
 const detailsPopUpContent = document.querySelector('.details-container');
 const closeDetailsPopUp = document.querySelector('.close-icon');
+const inboxAmount = document.querySelector('.inbox > .amount');
+const todayAmount = document.querySelector('.today > .amount');
 let today = new Date;
 let nextWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate()+6);
 today = today.toISOString().split('T')[0]
@@ -122,8 +124,16 @@ function addTaskListItem(title,date,priority){
         todoItems.splice(index,1);
         tasksItems.removeChild(item);
         localStorage.setItem('tasks',JSON.stringify(todoItems));
+        inboxAmount.textContent = todoItems.length;
     });
-
+    inboxAmount.textContent = todoItems.length
+    for(let item of todoItems){
+        let count = 0;
+        if(item.dueDate === today){
+            count += 1;
+            todayAmount.textContent = count;
+        };
+    };
     const right = createDivElementWithClass('task-right');
     const left = createDivElementWithClass('task-left');
     left.appendChild(checkMark);
