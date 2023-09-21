@@ -405,12 +405,12 @@ select, #due-date, #edit-due-date  {
 
 .hidden {
     margin-left: -310px;
-    transition: 0.75s;
+    transition: 0.75s ease-in-out;
 }
 
 .open {
     margin-left: 0;
-    transition: 0.75s;
+    transition: 0.75s ease-in-out;
 }
 
 .expand-main {
